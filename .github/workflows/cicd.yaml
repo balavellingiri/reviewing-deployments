@@ -22,17 +22,21 @@ jobs:
       - name: Deploy to development
         run: |
           echo "APP deploying to develpment"
-          echo $VARIABLE
+          echo ${VARIABLE}
   Deploy-Staging:
     runs-on: ubuntu-latest
     needs: ["Build"]
     if: github.event.ref == 'refs/heads/main'
+    env:
+      VARIABLE: ${{ secrets.VARIABLE }} 
     environment:
       name: Staging
       url: https://google.com
     steps:
       - name: Deploy app to staging
-        run: echo "APP deploying to staging"
+        run: |
+          echo "APP deploying to staging"
+          echo ${VARIABLE}
   Deploy-Production:
     runs-on: ubuntu-latest
     needs: ["Deploy-Staging"]
